@@ -495,13 +495,12 @@
 </a>
         </div>
     </section>
-
     <section class="products-section" id="products">
         <div class="section-header">
             <h2>Nos Produits Vedettes</h2>
             <p>Découvrez notre sélection d'ordinateurs haut de gamme conçus pour répondre à tous vos besoins</p>
         </div>
-     <!-- test -->
+     <!-- test  fin -->
         <div class="products-grid">
             <!-- Product Card 1 -->
             <div class="product-card">
