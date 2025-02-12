@@ -496,6 +496,9 @@
         </div>
     </section>
 
+
+
+    
     <section class="products-section" id="products">
         <div class="section-header">
             <h2>Nos Produits Vedettes</h2>
