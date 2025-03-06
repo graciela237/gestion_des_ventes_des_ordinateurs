@@ -13,6 +13,9 @@ if (!isset($_SESSION['user_id'])) {
 // Include database connection
 require_once 'DatabaseConnection/db_config.php';
 
+// Include TCPDF library
+require_once __DIR__ . '/../TCPDF-main/TCPDF-main/tcpdf.php';
+
 // Page title
 $pageTitle = "Votre Panier | TechPro";
 
@@ -64,6 +67,87 @@ function getUserDetails($conn, $userId) {
     return null;
 }
 
+function generatePDF($userData, $cartItems, $totalAmount) {
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    // Set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('TechPro');
+    $pdf->SetTitle('Order Receipt');
+    $pdf->SetSubject('Order Receipt');
+    $pdf->SetKeywords('TCPDF, PDF, receipt, order');
+
+    // Set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+    // Set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+    // Set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    // Set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    // Set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    // Set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    // Add a page
+    $pdf->AddPage();
+
+    // Set some content to print
+    $html = '
+    <h1>Order Receipt</h1>
+    <h2>Customer Information</h2>
+    <p><strong>Name:</strong> ' . $userData['first_name'] . ' ' . $userData['last_name'] . '</p>
+    <p><strong>Email:</strong> ' . $userData['email'] . '</p>
+    <p><strong>Phone:</strong> ' . $userData['phone_number'] . '</p>
+    <p><strong>Address:</strong> ' . $userData['quarter'] . ', ' . $userData['state'] . ', ' . $userData['country'] . '</p>
+    <h2>Order Details</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>';
+
+    foreach ($cartItems as $item) {
+        $html .= '
+        <tr>
+            <td>' . $item['name'] . '</td>
+            <td>' . $item['quantity'] . '</td>
+            <td>' . number_format($item['price'], 2, ',', ' ') . ' CFA</td>
+            <td>' . number_format($item['subtotal'], 2, ',', ' ') . ' CFA</td>
+        </tr>';
+    }
+
+    $html .= '
+        <tr>
+            <td colspan="3" align="right"><strong>Total:</strong></td>
+            <td>' . number_format($totalAmount, 2, ',', ' ') . ' CFA</td>
+        </tr>
+    </table>
+    <h2>Signature</h2>
+    <p>Customer Signature: ___________________________</p>
+    <p>Company Signature: ___________________________</p>
+    <p>Date: ' . date('Y-m-d') . '</p>';
+
+    // Print text using writeHTMLCell()
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+    // Save the PDF to a file
+    $pdfFilePath = 'order_receipts/order_receipt_' . time() . '.pdf'; // Save in the order_receipts folder
+    $pdf->Output($pdfFilePath, 'F'); // Save the file to the server
+
+    return $pdfFilePath; // Return the file path
+}
 // Get cart data
 $cartData = getCartItems($conn, $_SESSION['user_id']);
 $cartItems = $cartData['items'];
@@ -74,6 +158,39 @@ $userData = getUserDetails($conn, $_SESSION['user_id']);
 
 // WhatsApp number
 $whatsappNumber = "+237694048635"; // WhatsApp number provided
+
+// Generate PDF and send via WhatsApp
+if (isset($_POST['send_whatsapp'])) {
+    // Generate the PDF and get the file path
+    $pdfFilePath = generatePDF($userData, $cartItems, $totalAmount);
+
+    // Format cart items for WhatsApp message
+    $itemsList = "";
+    foreach ($cartItems as $item) {
+        $itemsList .= "- " . $item['name'] . " x" . $item['quantity'] . " = " . number_format($item['subtotal'], 2, ',', ' ') . " CFA\n";
+    }
+
+    // Create WhatsApp message with a link to download the PDF
+    $pdfDownloadLink = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/' . $pdfFilePath;
+    $message = urlencode(
+        "*NOUVELLE COMMANDE TECHPRO*\n\n" .
+        "*Informations client:*\n" .
+        "Nom: " . $userData['first_name'] . " " . $userData['last_name'] . "\n" .
+        "Email: " . $userData['email'] . "\n" .
+        "Téléphone: " . $userData['phone_number'] . "\n" .
+        "Adresse: " . $userData['quarter'] . ", " . $userData['state'] . ", " . $userData['country'] . "\n\n" .
+        "*Articles commandés:*\n" . $itemsList . "\n" .
+        "*TOTAL: " . number_format($totalAmount, 2, ',', ' ') . " CFA*\n\n" .
+        "Téléchargez votre reçu ici: " . $pdfDownloadLink . "\n\n" .
+        "Merci pour votre commande!"
+    );
+
+    // Open WhatsApp with the message
+    header("Location: https://wa.me/$whatsappNumber?text=$message");
+    exit();
+}
+
+// Include the rest of your HTML and JavaScript code here...
 ?>
 
 <!-- Link to external CSS -->
@@ -540,9 +657,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
-
-
 
 <?php
 // Include footer

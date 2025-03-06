@@ -1524,3 +1524,46 @@ Stack trace:
 [06-Mar-2025 10:07:13 Europe/Berlin] PHP Warning:  include(): Failed opening 'styles.css' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
 [06-Mar-2025 11:00:37 Europe/Berlin] PHP Warning:  include(styles.css): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
 [06-Mar-2025 11:00:37 Europe/Berlin] PHP Warning:  include(): Failed opening 'styles.css' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 11:30:35 Europe/Berlin] PHP Warning:  require_once(tcpdf/tcpdf.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:30:35 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'tcpdf/tcpdf.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:50:10 Europe/Berlin] PHP Warning:  require_once(TCPDF-main/tcpdf.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:50:10 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'TCPDF-main/tcpdf.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:50:54 Europe/Berlin] PHP Warning:  require_once(TCPDF-main/TCPDF-main/tcpdf.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:50:54 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'TCPDF-main/TCPDF-main/tcpdf.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:51:41 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/tcpdf_autoconfig.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php on line 111
+[06-Mar-2025 11:51:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/tcpdf_autoconfig.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php:111
+Stack trace:
+#0 C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php(17): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php on line 111
+[06-Mar-2025 11:51:42 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/tcpdf_autoconfig.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php on line 111
+[06-Mar-2025 11:51:42 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/tcpdf_autoconfig.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php:111
+Stack trace:
+#0 C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php(17): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\tcpdf.php on line 111
+[06-Mar-2025 11:55:27 Europe/Berlin] PHP Warning:  require_once(TCPDF-main/TCPDF-main/tcpdf.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:55:27 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'TCPDF-main/TCPDF-main/tcpdf.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:56:45 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/../TCPDF-main/tcpdf.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:56:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages/../TCPDF-main/tcpdf.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php:17
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\cart.php on line 17
+[06-Mar-2025 11:57:39 Europe/Berlin] PHP Warning:  include(styles.css): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 11:57:39 Europe/Berlin] PHP Warning:  include(): Failed opening 'styles.css' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 12:17:31 Europe/Berlin] PHP Warning:  include(styles.css): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 12:17:31 Europe/Berlin] PHP Warning:  include(): Failed opening 'styles.css' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 12:30:30 Europe/Berlin] PHP Warning:  include(styles.css): Failed to open stream: No such file or directory in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
+[06-Mar-2025 12:30:30 Europe/Berlin] PHP Warning:  include(): Failed opening 'styles.css' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\graceCatherine BTS\gestion_des_ventes_des_ordinateurs\Pages\index.php on line 25
