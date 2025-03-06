@@ -1,0 +1,8 @@
+[2025-03-06 06:08:59] [raw_response] {"status":"error","errors":[{"field":"customer.email","message":"Customer email is required"}],"message":"One or more required parameters missing"}
+[2025-03-06 06:09:06] [raw_response] {"status":"success","message":"Hosted Link","data":{"link":"https://checkout-v2.dev-flutterwave.com/v3/hosted/pay/dc83cd0ac20aa3b0b64f"}}
+[2025-03-06 06:09:22] [raw_response] {"status":"error","errors":[{"field":"customer.email","message":"Customer email is required"}],"message":"One or more required parameters missing"}
+[2025-03-06 06:09:26] [raw_response] {"status":"success","message":"Hosted Link","data":{"link":"https://checkout-v2.dev-flutterwave.com/v3/hosted/pay/ab38587e527e010c4792"}}
+[2025-03-06 06:18:24] [raw_response] {"status":"error","errors":[{"field":"customer.email","message":"Customer email is required"}],"message":"One or more required parameters missing"}
+[2025-03-06 06:18:26] [raw_response] {"status":"success","message":"Hosted Link","data":{"link":"https://checkout-v2.dev-flutterwave.com/v3/hosted/pay/88ccdc540ee75ac5d13f"}}
+[2025-03-06 06:25:04] [raw_response] {"status":"error","errors":[{"field":"customer.email","message":"Customer email is required"}],"message":"One or more required parameters missing"}
+[2025-03-06 06:25:09] [raw_response] {"status":"success","message":"Hosted Link","data":{"link":"https://checkout-v2.dev-flutterwave.com/v3/hosted/pay/6914a8afc58eaff213fa"}}
