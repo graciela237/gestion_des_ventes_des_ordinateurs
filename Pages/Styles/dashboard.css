@@ -1,0 +1,246 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #1abc9c;
+    --background-light: #f8f9fa;
+    --text-dark: #333;
+    --text-light: #ecf0f1;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --success-color: #27ae60;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-light);
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    width: 250px;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.sidebar-collapsed {
+    width: 70px;
+}
+
+.sidebar .logo {
+    padding: 20px 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: bold;
+}
+
+.sidebar .nav-link {
+    color: var(--text-light);
+    padding: 12px 20px;
+    margin: 4px 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--secondary-color);
+    color: var(--text-dark);
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-collapsed .nav-link span,
+.sidebar-collapsed .role-indicator {
+    display: none;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+.main-content-expanded {
+    margin-left: 70px;
+}
+
+.page-header {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: bold;
+}
+
+.stat-card {
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.orange {
+    background: linear-gradient(45deg, #ff9800, #ff5722);
+}
+
+.stat-card.blue {
+    background: linear-gradient(45deg, #2196f3, #3f51b5);
+}
+
+.stat-card.green {
+    background: linear-gradient(45deg, #4caf50, #009688);
+}
+
+.stat-card.red {
+    background: linear-gradient(45deg, #f44336, #e91e63);
+}
+
+.stat-card i {
+    font-size: 48px;
+    opacity: 0.5;
+}
+
+.stat-card .stat-value {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.stat-card .stat-label {
+    font-size: 14px;
+    opacity: 0.8;
+    text-transform: uppercase;
+}
+
+.toggle-sidebar {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    left: 235px;
+    top: 20px;
+    z-index: 1001;
+    transition: all 0.3s;
+}
+
+.toggle-sidebar-collapsed {
+    left: 55px;
+}
+
+.sidebar .role-indicator {
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-top: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-top {
+    background-color: white;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-top .dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.badge {
+    padding: 5px 10px;
+    font-weight: normal;
+}
+
+.nav-section {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.nav-section-title {
+    padding: 5px 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.dropdown-menu {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar .nav-link span,
+    .sidebar .role-indicator {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+    }
+    
+    .toggle-sidebar {
+        left: 55px;
+    }
+}
