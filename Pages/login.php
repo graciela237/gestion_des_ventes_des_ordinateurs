@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         try {
             // First check if user exists in users table
-            $stmt = $conn->prepare("SELECT u.user_id, u.email, u.password_hash, u.first_name, u.last_name, r.role_name 
+            $stmt = $conn->prepare("SELECT u.user_id, u.email, u.password_hash, u.first_name, u.last_name, r.role_name, r.role_id 
                                     FROM users u 
                                     JOIN roles r ON u.role_id = r.role_id 
                                     WHERE u.email = ?");
@@ -50,12 +50,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $_SESSION['user_email'] = $user['email'];
                         $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
                         $_SESSION['user_role'] = $user['role_name'];
+                        $_SESSION['role_id'] = $user['role_id'];
                         
                         // Redirect based on role
-                        if ($user['role_name'] == 'admin' || $user['role_name'] == 'super_admin') {
-                            header("Location: admin/dashboard.php");
-                        } else {
-                            header("Location: index.php");
+                        switch ($user['role_id']) {
+                            case 1: // admin
+                                header("Location: admin/dashboard.php");
+                                break;
+                            case 2: // client
+                                header("Location: index.php");
+                                break;
+                            case 3: // vendeur
+                                header("Location: vendeur/dashboard.php");
+                                break;
+                            case 4: // gestionnaire_stock
+                                header("Location: stock/dashboard.php");
+                                break;
+                            case 5: 
+                                header("Location: finance/dashboard.php");
+                                break;
                         }
                         exit();
                     } else {
@@ -83,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 $_SESSION['user_email'] = $admin['email'];
                                 $_SESSION['user_name'] = $admin['first_name'] . ' ' . $admin['last_name'];
                                 $_SESSION['user_role'] = 'admin'; // Default to admin role for backward compatibility
+                                $_SESSION['role_id'] = 1; // Assuming admin role_id is 1
                                 
                                 // Redirect to admin dashboard
                                 header("Location: admin/dashboard.php");

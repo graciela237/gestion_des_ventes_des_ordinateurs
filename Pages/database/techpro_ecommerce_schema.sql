@@ -54,17 +54,13 @@ CREATE TABLE roles (
     description TEXT
 );
 
--- Insert roles (consolidated)
+-- Insert roles (modified to remove specified roles)
 INSERT INTO roles (role_name, description) VALUES
 ('admin', 'Administrator with full access to the system'),
-('super_admin', 'Super Administrator with extended privileges'),
 ('client', 'Regular customer'),
 ('vendeur', 'Salesperson who assists customers and processes sales'),
 ('gestionnaire_stock', 'Stock Manager who maintains inventory'),
-('fournisseur', 'Supplier who provides computers and accessories'),
-('responsable_financier', 'Finance Manager who handles transactions and finances'),
-('livreur', 'Delivery Personnel who delivers products to customers'),
-('support_client', 'Customer Support who handles inquiries and complaints');
+('responsable_financier', 'Finance Manager who handles transactions and finances');
 
 -- Users Table
 CREATE TABLE users (
@@ -78,7 +74,7 @@ CREATE TABLE users (
     quarter VARCHAR(100),
     password_hash VARCHAR(255) NOT NULL,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    role_id INT DEFAULT 3,
+    role_id INT DEFAULT 2,
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
@@ -403,12 +399,12 @@ BEGIN
     
     -- Check if stock falls below threshold and create notification
     IF ((old_quantity - NEW.quantity) <= (SELECT low_stock_threshold FROM products WHERE product_id = NEW.product_id)) THEN
-        -- Notify stock managers (role_id 5)
+        -- Notify stock managers (role_id 4)
         INSERT INTO notifications (user_id, title, message)
         SELECT user_id, 
                CONCAT('Low Stock Alert: ', (SELECT name FROM products WHERE product_id = NEW.product_id)),
                CONCAT('Product ID #', NEW.product_id, ' stock is low. Current quantity: ', (old_quantity - NEW.quantity))
-        FROM users WHERE role_id = 5;
+        FROM users WHERE role_id = 4;
     END IF;
 END //
 
@@ -472,7 +468,7 @@ AFTER INSERT ON users
 FOR EACH ROW
 BEGIN
     -- Create a default wishlist for new users
-    IF NEW.role_id = 3 THEN -- Only for clients
+    IF NEW.role_id = 2 THEN -- Only for clients
         INSERT INTO wishlists (user_id, created_at)
         VALUES (NEW.user_id, NOW());
     END IF;
@@ -677,35 +673,23 @@ INSERT INTO suppliers (company_name, contact_name, email, phone_number, address)
 ('Dell Technologies', 'Marie Claire', 'contact@dell-tech.com', '+237623456789', 'Avenue Central, Yaounde'),
 ('Lenovo Group', 'Paul Biya', 'contact@lenovo-group.com', '+237634567890', 'Boulevard 34, Limbe');
 
--- Insert sample users for each role
+-- Insert sample users for each role (modified to remove specified users)
 -- Note: All passwords are set to 'Password123!' with this hash
 INSERT INTO users (first_name, last_name, email, phone_number, country, state, quarter, password_hash, role_id) VALUES
 -- Administrator (role_id = 1)
-('Admin', 'User', 'admin@techpro.com', '+2376512345', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 1),
+('Admin', 'User', 'admin@techpro.com', '+2376512345', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$6IPhTFWx/cx/TEMqK584O.Oe0yuCgnzFlU0yJZdeB//1CZEbenn3a', 1),
 
--- Super Admin (role_id = 2)
-('Super', 'Admin', 'superadmin@techpro.com', '+2376523456', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 2),
+-- Client (role_id = 2)
+('Client', 'User', 'client@example.com', '+2376534567', 'Cameroon', 'Littoral', 'Douala', '$2y$12$6IPhTFWx/cx/TEMqK584O.Oe0yuCgnzFlU0yJZdeB//1CZEbenn3a', 2),
 
--- Client (role_id = 3)
-('Client', 'User', 'client@example.com', '+2376534567', 'Cameroon', 'Littoral', 'Douala', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 3),
+-- Vendeur (role_id = 3)
+('Vendeur', 'Sales', 'vendeur@techpro.com', '+2376545678', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$6IPhTFWx/cx/TEMqK584O.Oe0yuCgnzFlU0yJZdeB//1CZEbenn3a', 3),
 
--- Vendeur (role_id = 4)
-('Vendeur', 'Sales', 'vendeur@techpro.com', '+2376545678', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 4),
+-- Gestionnaire Stock (role_id = 4)
+('Stock', 'Manager', 'stock@techpro.com', '+2376556789', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$6IPhTFWx/cx/TEMqK584O.Oe0yuCgnzFlU0yJZdeB//1CZEbenn3a', 4),
 
--- Gestionnaire Stock (role_id = 5)
-('Stock', 'Manager', 'stock@techpro.com', '+2376556789', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 5),
-
--- Fournisseur (role_id = 6)
-('Supplier', 'Partner', 'supplier@techpro.com', '+2376567890', 'Cameroon', 'Littoral', 'Douala', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 6),
-
--- Responsable Financier (role_id = 7)
-('Finance', 'Manager', 'finance@techpro.com', '+2376578901', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 7),
-
--- Livreur (role_id = 8)
-('Delivery', 'Person', 'delivery@techpro.com', '+2376589012', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 8),
-
--- Support Client (role_id = 9)
-('Support', 'Agent', 'support@techpro.com', '+2376590123', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$ZZQ1Kh8eLVq3GpwLSVJhfuEMGHV1ZHPQww1XLi1FKWCq/KAZSNyni', 9);
+-- Responsable Financier (role_id = 5)
+('Finance', 'Manager', 'finance@techpro.com', '+2376578901', 'Cameroon', 'Centre', 'Yaounde', '$2y$12$6IPhTFWx/cx/TEMqK584O.Oe0yuCgnzFlU0yJZdeB//1CZEbenn3a', 5);
 
 -- Insert Sample Products with realistic pricing below 60,000
 INSERT INTO products (

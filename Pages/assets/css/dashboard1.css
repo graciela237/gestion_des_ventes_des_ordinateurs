@@ -1,0 +1,86 @@
+/* General Styling */
+body {
+  font-family: "Nunito", sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #fff;
+  border-bottom: 2px solid #ddd;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.dashboard-content {
+  padding: 20px;
+}
+
+/* Stats Cards */
+.stats-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 250px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.stat-card-icon {
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+}
+
+.stat-card-info h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.stat-card-info h2 {
+  margin: 5px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Colors for different stats */
+.blue {
+  background: #007bff;
+}
+.green {
+  background: #28a745;
+}
+.orange {
+  background: #fd7e14;
+}
+.red {
+  background: #dc3545;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #fff;
+  border-top: 2px solid #ddd;
+  margin-top: 20px;
+}

@@ -1,0 +1,307 @@
+/* Sidebar Styles */
+:root {
+  --primary-color: #4e73df;
+  --secondary-color: #224abe;
+  --text-color: #f8f9fc;
+  --background-color: #4e73df;
+  --background-gradient-start: #4e73df;
+  --background-gradient-end: #224abe;
+  --hover-color: rgba(255, 255, 255, 0.2);
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 70px;
+  --transition-speed: 0.3s;
+  --border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Admin theme */
+.admin-theme {
+  --primary-color: #4e73df;
+  --secondary-color: #224abe;
+  --background-gradient-start: #4e73df;
+  --background-gradient-end: #224abe;
+}
+
+/* Finance theme */
+.finance-theme {
+  --primary-color: #1cc88a;
+  --secondary-color: #169a6e;
+  --background-gradient-start: #1cc88a;
+  --background-gradient-end: #169a6e;
+}
+
+/* Vendeur theme */
+.vendeur-theme {
+  --primary-color: #f6c23e;
+  --secondary-color: #dda20a;
+  --background-gradient-start: #f6c23e;
+  --background-gradient-end: #dda20a;
+}
+
+/* Stock theme */
+.stock-theme {
+  --primary-color: #e74a3b;
+  --secondary-color: #be2617;
+  --background-gradient-start: #e74a3b;
+  --background-gradient-end: #be2617;
+}
+
+/* Apply correct theme based on role */
+body[data-role="admin"] {
+  --primary-color: #4e73df;
+  --secondary-color: #224abe;
+  --background-gradient-start: #4e73df;
+  --background-gradient-end: #224abe;
+}
+
+body[data-role="finance"] {
+  --primary-color: #1cc88a;
+  --secondary-color: #169a6e;
+  --background-gradient-start: #1cc88a;
+  --background-gradient-end: #169a6e;
+}
+
+body[data-role="vendeur"] {
+  --primary-color: #f6c23e;
+  --secondary-color: #dda20a;
+  --background-gradient-start: #f6c23e;
+  --background-gradient-end: #dda20a;
+}
+
+body[data-role="stock"] {
+  --primary-color: #e74a3b;
+  --secondary-color: #be2617;
+  --background-gradient-start: #e74a3b;
+  --background-gradient-end: #be2617;
+}
+
+/* General Layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8f9fc;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    var(--background-gradient-start) 0%,
+    var(--background-gradient-end) 100%
+  );
+  color: var(--text-color);
+  transition: all var(--transition-speed) ease;
+  z-index: 1000;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  overflow-y: auto;
+}
+
+.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 1.5rem;
+  transition: margin var(--transition-speed) ease;
+  width: calc(100% - var(--sidebar-width));
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+  width: calc(100% - var(--sidebar-collapsed-width));
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--hover-color);
+}
+
+/* User Profile Section */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-right: 10px;
+}
+
+.user-image i {
+  font-size: 1.5rem;
+}
+
+.user-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.sidebar-collapsed .user-info {
+  display: none;
+}
+
+/* Menu Items */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  transition: all var(--transition-speed) ease;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all var(--transition-speed) ease;
+  white-space: nowrap;
+}
+
+.sidebar-menu li a i {
+  min-width: 25px;
+  margin-right: 10px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.sidebar-menu li:hover {
+  background-color: var(--hover-color);
+}
+
+.sidebar-menu li.active {
+  background-color: var(--hover-color);
+  border-left: 4px solid white;
+}
+
+.sidebar-menu li.active a {
+  font-weight: bold;
+}
+
+.sidebar-collapsed .sidebar-menu li a span {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .sidebar-shown .sidebar {
+    width: var(--sidebar-width);
+  }
+
+  .sidebar-shown .main-content {
+    margin-left: 0;
+  }
+
+  /* Add an overlay when sidebar is shown on mobile */
+  .sidebar-shown:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  /* Show mobile toggle button */
+  .mobile-toggle {
+    display: block;
+  }
+}
+
+/* Mobile toggle button */
+.mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: flex;
+  }
+}
