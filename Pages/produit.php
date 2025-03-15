@@ -4,8 +4,23 @@ session_start();
 require_once 'DatabaseConnection/db_config.php';
 require_once 'get_products.php';
 
-// Fetch featured products
-$products = getProducts(true);
+// Fetch both all products (with newest first) and featured products
+$allProducts = getProducts(false);
+$newestProduct = !empty($allProducts) ? $allProducts[0] : null; // Get the newest product
+$featuredProducts = getProducts(true);
+
+// Merge arrays to ensure newest product appears even if not featured
+$productsToShow = [];
+if ($newestProduct) {
+    $productsToShow[] = $newestProduct; // Add newest product first
+}
+
+// Add featured products that aren't the newest product
+foreach ($featuredProducts as $product) {
+    if (!$newestProduct || $product['product_id'] != $newestProduct['product_id']) {
+        $productsToShow[] = $product;
+    }
+}
 
 // Fetch categories for category filter
 $stmt = $pdo->query("SELECT * FROM product_categories");
@@ -37,6 +52,25 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="Styles/styles.css">
     
     <title><?= $pageTitle ?></title>
+    <style>
+        .new-product-banner {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 5px 25px;
+            font-weight: bold;
+            transform: rotate(45deg);
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .product-card {
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
     <?php include 'header.php'; ?>
@@ -80,14 +114,17 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
         <section class="products-section" id="products">
             <div class="section-header">
-                <h2>Nos Produits Vedettes</h2>
+                <h2>Nos Produits</h2>
                 <p>Découvrez notre sélection d'ordinateurs haut de gamme conçus pour répondre à tous vos besoins</p>
             </div>
             <div class="products-grid">
-                <?php foreach ($products as $product): ?>
+                <?php foreach ($productsToShow as $product): ?>
                 <div class="product-card" 
                      data-price="<?= $product['price'] ?>" 
                      data-category="<?= htmlspecialchars($product['category_name']) ?>">
+                    <?php if ($product === $newestProduct): ?>
+                    <div class="new-product-banner">Nouveau!</div>
+                    <?php endif; ?>
                     <img src="<?= htmlspecialchars($product['image_path']) ?>" 
                          alt="<?= htmlspecialchars($product['name']) ?>" 
                          class="product-image">
@@ -106,8 +143,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </div>
                         <div class="product-actions">
                             <a href="detail.php?id=<?= $product['product_id'] ?>" class="btn btn-secondary">
-    <i class="fas fa-info-circle"></i> Détails
-</a>
+                                <i class="fas fa-info-circle"></i> Détails
+                            </a>
                             <button class="btn btn-primary" onclick="addToCart(<?= $product['product_id'] ?>)">
                                 <i class="fas fa-shopping-cart"></i> Acheter
                             </button>
@@ -123,8 +160,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
     <script>
         // Cart functionality
-       // Cart functionality
- function addToCart(productId) {
+        function addToCart(productId) {
             // Create form data to send
             const formData = new FormData();
             formData.append('product_id', productId);

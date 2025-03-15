@@ -1,14 +1,36 @@
 <?php
+// Start session and include necessary files
 session_start();
 require_once 'DatabaseConnection/db_config.php';
 require_once 'get_products.php';
 
-// Fetch featured products
-$products = getProducts(true);
+// Fetch both all products (with newest first) and featured products
+$allProducts = getProducts(false);
+$newestProduct = !empty($allProducts) ? $allProducts[0] : null; // Get the newest product
+$featuredProducts = getProducts(true);
+
+// Merge arrays to ensure newest product appears even if not featured
+$productsToShow = [];
+if ($newestProduct) {
+    $productsToShow[] = $newestProduct; // Add newest product first
+}
+
+// Add featured products that aren't the newest product
+foreach ($featuredProducts as $product) {
+    if (!$newestProduct || $product['product_id'] != $newestProduct['product_id']) {
+        $productsToShow[] = $product;
+    }
+}
 
 // Fetch categories for category filter
 $stmt = $pdo->query("SELECT * FROM product_categories");
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ensure cart is initialized if not exists
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+$cartCount = count($_SESSION['cart']);
 
 // Page-specific title
 $pageTitle = "TechPro - Accueil";
@@ -22,7 +44,23 @@ $pageTitle = "TechPro - Accueil";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="Styles/styles.css">
     <style>
-        <?php include 'styles.css'; ?>
+        .new-product-banner {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 5px 25px;
+            font-weight: bold;
+            transform: rotate(45deg);
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .product-card {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -42,17 +80,40 @@ $pageTitle = "TechPro - Accueil";
         </div>
     </section>
 
-   <section class="filter-section">
+    <!-- Cart Notification -->
+    <div id="cart-notification">
+        <i class="fas fa-check-circle"></i> Produit ajouté au panier!
+    </div>
+
+    <!-- Login Required Notification -->
+    <div id="login-notification">
+        <i class="fas fa-exclamation-circle"></i> Veuillez vous connecter pour ajouter au panier
+    </div>
+
+    <section class="filter-section">
         <div class="filter-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="product-search" placeholder="Rechercher un produit...">
             </div>
+            
+            <div class="category-filter">
+                <select id="category-select">
+                    <option value="">Toutes les catégories</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= htmlspecialchars($category['category_name']) ?>">
+                            <?= htmlspecialchars($category['category_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
             <div class="price-filter">
                 <label>Prix max:</label>
                 <input type="number" id="price-max" value="5000000" step="10000" min="0">
                 <span>FCFA</span>
             </div>
+            
             <button class="sort-button" id="sort-button">
                 <i class="fas fa-sort"></i>
                 Trier par prix
@@ -66,17 +127,22 @@ $pageTitle = "TechPro - Accueil";
             <p>Découvrez notre sélection d'ordinateurs haut de gamme conçus pour répondre à tous vos besoins</p>
         </div>
         <div class="products-grid">
-            <?php foreach ($products as $product): ?>
+            <?php foreach ($productsToShow as $product): ?>
             <div class="product-card" 
                  data-price="<?= $product['price'] ?>" 
                  data-category="<?= htmlspecialchars($product['category_name']) ?>">
-                <img src="<?= $product['image_path'] ?>" alt="<?= $product['name'] ?>" class="product-image">
-                <span class="product-badge"><?= $product['badge'] ?></span>
+                <?php if ($product === $newestProduct): ?>
+                <div class="new-product-banner">Nouveau!</div>
+                <?php endif; ?>
+                <img src="<?= htmlspecialchars($product['image_path']) ?>" 
+                     alt="<?= htmlspecialchars($product['name']) ?>" 
+                     class="product-image">
+                <span class="product-badge"><?= htmlspecialchars($product['badge']) ?></span>
                 <div class="product-details">
-                    <h3 class="product-title"><?= $product['name'] ?></h3>
+                    <h3 class="product-title"><?= htmlspecialchars($product['name']) ?></h3>
                     <p class="product-category"><?= htmlspecialchars($product['category_name']) ?></p>
                     <p class="product-specs">
-                        <?= nl2br($product['specifications']) ?>
+                        <?= nl2br(htmlspecialchars($product['specifications'])) ?>
                     </p>
                     <div class="product-price">
                         <?php if ($product['original_price']): ?>
@@ -85,12 +151,12 @@ $pageTitle = "TechPro - Accueil";
                         <?= formatPrice($product['price']) ?>
                     </div>
                     <div class="product-actions">
-                         <a href="detail.php?id=<?= $product['product_id'] ?>" class="btn btn-secondary">
+                        <a href="detail.php?id=<?= $product['product_id'] ?>" class="btn btn-secondary">
                             <i class="fas fa-info-circle"></i> Détails
-                         </a>
-                         <button class="btn btn-primary" onclick="addToCart(<?= $product['product_id'] ?>)">
+                        </a>
+                        <button class="btn btn-primary" onclick="addToCart(<?= $product['product_id'] ?>)">
                             <i class="fas fa-shopping-cart"></i> Acheter
-                         </button>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -111,7 +177,7 @@ $pageTitle = "TechPro - Accueil";
             function filterProducts() {
                 const searchTerm = productSearch.value.toLowerCase();
                 const maxPrice = parseInt(priceMax.value);
-                const selectedCategory = categorySelect ? categorySelect.value : null;
+                const selectedCategory = categorySelect.value;
                 const products = document.querySelectorAll('.product-card');
 
                 products.forEach(product => {
@@ -149,9 +215,7 @@ $pageTitle = "TechPro - Accueil";
             // Event listeners
             productSearch.addEventListener('input', filterProducts);
             priceMax.addEventListener('input', filterProducts);
-            if (categorySelect) {
-                categorySelect.addEventListener('change', filterProducts);
-            }
+            categorySelect.addEventListener('change', filterProducts);
             sortButton.addEventListener('click', () => {
                 sortAscending = !sortAscending;
                 sortProducts();
