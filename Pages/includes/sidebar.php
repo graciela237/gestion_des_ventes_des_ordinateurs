@@ -10,6 +10,16 @@ function isActive($link) {
     return ($current_page == $link) ? 'active' : '';
 }
 
+// Define dashboard pages for each role
+$dashboardPages = [
+    'default' => 'dashboard1.php',
+    'admin' => 'dashboard1.php',
+    'client' => 'shop.php',
+    'vendeur' => 'vendeur_dashboard.php',
+    'gestionnaire_stock' => 'gestionnaire_stock_dashboard.php',
+    'responsable_financier' => 'transactions.php'
+];
+
 // Define sidebar items based on user role
 $sidebarItems = [
     'default' => [
@@ -77,18 +87,16 @@ $sidebarItems = [
     ],
    'vendeur' => [
         'dashboard' => ['icon' => 'fas fa-chart-line', 'title' => 'Tableau de bord', 'link' => 'vendeur_dashboard.php', 'class' => 'load-page'],
-        'sales' => ['icon' => 'fas fa-cash-register', 'title' => 'Ventes', 'link' => 'sales.php', 'class' => 'load-page'],
         'customers' => ['icon' => 'fas fa-users', 'title' => 'Clients', 'link' => 'customers.php', 'class' => 'load-page'],
+         'customers' => ['icon' => 'fas fa-users', 'title' => 'paiement', 'link' => 'verify_payment.php', 'class' => 'load-page'],
         'products' => ['icon' => 'fas fa-box', 'title' => 'Produits', 'link' => 'products.php', 'class' => 'load-page'],
         'orders' => ['icon' => 'fas fa-shopping-cart', 'title' => 'Commandes', 'link' => 'orders.php', 'class' => 'load-page'],
-    ]
-    'gestionnaire_stock' => [
-        'inventory' => ['icon' => 'fas fa-archive', 'title' => 'Inventaire', 'link' => 'inventory.php', 'class' => 'load-page'],
+   ],
+    'gestionnaire_stock' => [ 
+        'dashboard' => ['icon' => 'fas fa-chart-line', 'title' => 'Tableau de bord', 'link' => 'gestionnaire_stock_dashboard.php', 'class' => 'load-page'],
         'suppliers' => ['icon' => 'fas fa-truck', 'title' => 'Fournisseurs', 'link' => 'suppliers.php', 'class' => 'load-page'],
-        'stock_logs' => ['icon' => 'fas fa-clipboard-list', 'title' => 'Journaux de Stock', 'link' => 'stock_logs.php', 'class' => 'load-page'],
-        'deliveries' => ['icon' => 'fas fa-truck-moving', 'title' => 'Livraisons', 'link' => 'deliveries.php', 'class' => 'load-page'],
-        'low_stock' => ['icon' => 'fas fa-exclamation-triangle', 'title' => 'Alertes Stock Bas', 'link' => 'low_stock.php', 'class' => 'load-page']
-    ],
+        'low_stock' => ['icon' => 'fas fa-box', 'title' => 'Produits', 'link' => 'products.php', 'class' => 'load-page']
+    ],  
     'responsable_financier' => [
         'transactions' => ['icon' => 'fas fa-exchange-alt', 'title' => 'Transactions', 'link' => 'transactions.php', 'class' => 'load-page'],
         'payments' => ['icon' => 'fas fa-credit-card', 'title' => 'Paiements', 'link' => 'payments.php', 'class' => 'load-page'],
@@ -107,6 +115,9 @@ $currentRoleItems = $sidebarItems['default']; // Always include default items
 if (isset($sidebarItems[$role]) && $role !== 'default') {
     $currentRoleItems = array_merge($currentRoleItems, $sidebarItems[$role]);
 }
+
+// Get default dashboard page for the current role
+$defaultDashboard = isset($dashboardPages[$role]) ? $dashboardPages[$role] : 'dashboard1.php';
 
 // Site name
 $siteName = "TechPro Ecommerce";
@@ -186,6 +197,13 @@ $siteName = "TechPro Ecommerce";
             });
         }
         
+        // Load default dashboard page on initial load
+        var defaultDashboard = "<?= $defaultDashboard ?>";
+        loadPage(defaultDashboard);
+        
+        // Highlight the default dashboard menu item
+        $(".sidebar-menu a[href='" + defaultDashboard + "']").closest(".sidebar-item").addClass("active");
+        
         // Sidebar navigation (loads pages dynamically)
         $(".load-page").click(function(e) {
             e.preventDefault();
@@ -210,10 +228,6 @@ $siteName = "TechPro Ecommerce";
             $(this).next(".dropdown-menu").slideToggle(300);
             $(this).find(".dropdown-icon").toggleClass("fa-chevron-down fa-chevron-up");
         });
-        
-        // Set active class on page load
-        var currentPage = window.location.pathname.split("/").pop();
-        $(".sidebar-menu a[href='" + currentPage + "']").parent().addClass("active");
         
         // Open dropdown for active subitem
         if ($(".dropdown-menu a.active").length) {
@@ -316,6 +330,7 @@ $siteName = "TechPro Ecommerce";
 
 .sidebar-user {
     display: flex;
+    align-items: center;
     align-items: center;
     padding: 16px;
     background: #1a252f;

@@ -475,6 +475,8 @@ BEGIN
 END //
 
 -- Trigger to handle payment verification for cart items
+DELIMITER //
+DROP TRIGGER IF EXISTS after_cart_payment_update //
 CREATE TRIGGER after_cart_payment_update
 AFTER UPDATE ON cart
 FOR EACH ROW
@@ -561,10 +563,16 @@ BEGIN
             'Payment Successful',
             CONCAT('Your payment for ', (SELECT name FROM products WHERE product_id = NEW.product_id), ' has been verified and processed.')
         );
+        
+        -- Signal that this cart item needs deletion
+        -- We'll handle the actual deletion with an event or separate process
+        INSERT INTO cart_items_to_delete (cart_id) VALUES (NEW.cart_id);
     END IF;
 END //
+DELIMITER ;
 
 -- Trigger to handle payment verification for order items
+DELIMITER //
 CREATE TRIGGER after_order_item_payment_update
 AFTER UPDATE ON order_items
 FOR EACH ROW
@@ -640,8 +648,8 @@ BEGIN
         );
     END IF;
 END //
-
 DELIMITER ;
+
 
 -- Create an event to delete cart items older than 3 hours
 DELIMITER //
@@ -652,7 +660,28 @@ BEGIN
     DELETE FROM cart WHERE added_at < DATE_SUB(NOW(), INTERVAL 3 HOUR) AND payment_status = 'pending';
 END//
 DELIMITER ;
+-- Create table to track cart items that need deletion
+CREATE TABLE IF NOT EXISTS cart_items_to_delete (
+    delete_id INT PRIMARY KEY AUTO_INCREMENT,
+    cart_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (cart_id) REFERENCES cart(cart_id) ON DELETE CASCADE
+);
 
+-- Create an event to process the deletions
+DELIMITER //
+CREATE EVENT IF NOT EXISTS process_cart_deletions
+ON SCHEDULE EVERY 1 MINUTE
+DO
+BEGIN
+    -- Delete the actual cart items
+    DELETE FROM cart 
+    WHERE cart_id IN (SELECT cart_id FROM cart_items_to_delete);
+    
+    -- Clean up the tracking table
+    DELETE FROM cart_items_to_delete;
+END//
+DELIMITER ;
 -- Make sure the event scheduler is running
 SET GLOBAL event_scheduler = ON;
 

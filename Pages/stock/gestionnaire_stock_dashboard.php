@@ -1,5 +1,15 @@
 <?php
 // Start session to access user data
+session_start();
+
+// Check if user is logged in and has the correct role
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 4) { // 4 is the role_id for gestionnaire_stock
+    // Redirect to login page if not logged in or not the correct role
+    header("Location: ../login.php");
+    exit();
+}
+
+// Include database connection
 require_once '../DatabaseConnection/db_config.php';
 
 // Get essential dashboard statistics

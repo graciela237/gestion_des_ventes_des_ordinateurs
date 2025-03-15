@@ -2495,3 +2495,19 @@ Stack trace:
 #0 C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\admin\invoices.php(28): mysqli->query('SELECT * FROM i...')
 #1 {main}
   thrown in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\admin\invoices.php on line 28
+[15-Mar-2025 05:47:22 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'price' in 'field list' in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php:106
+Stack trace:
+#0 C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php(106): mysqli_query(Object(mysqli), 'SELECT \r\n      ...')
+#1 {main}
+  thrown in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php on line 106
+[15-Mar-2025 05:48:16 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'price' in 'field list' in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php:106
+Stack trace:
+#0 C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php(106): mysqli_query(Object(mysqli), 'SELECT \r\n      ...')
+#1 {main}
+  thrown in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php on line 106
+[15-Mar-2025 06:21:25 Europe/Berlin] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php on line 207
+[15-Mar-2025 06:21:37 Europe/Berlin] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\vendeur\verify_payment.php on line 207
+[15-Mar-2025 07:38:31 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined function getCartItems() in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\order_items.php:77
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\order_items.php on line 77
