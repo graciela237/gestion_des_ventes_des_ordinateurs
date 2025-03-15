@@ -60,10 +60,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 <a href="produit.php" class="<?= $currentPage == 'produit.php' ? 'active' : '' ?>">
                     <i class="fas fa-store"></i> Produits
                 </a>
-                <a href="#about" class="<?= $currentPage == 'index.php' && isset($_GET['section']) && $_GET['section'] == 'about' ? 'active' : '' ?>">
+                <a href="about.php" class="<?= $currentPage == 'index.php' && isset($_GET['section']) && $_GET['section'] == 'about' ? 'active' : '' ?>">
                     <i class="fas fa-info-circle"></i> À propos
                 </a>
-                <a href="#contact" class="<?= $currentPage == 'index.php' && isset($_GET['section']) && $_GET['section'] == 'contact' ? 'active' : '' ?>">
+                <a href="contact.php" class="<?= $currentPage == 'index.php' && isset($_GET['section']) && $_GET['section'] == 'contact' ? 'active' : '' ?>">
                     <i class="fas fa-envelope"></i> Contact
                 </a>
                 

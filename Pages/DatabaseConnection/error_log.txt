@@ -2511,3 +2511,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\order_items.php on line 77
+[15-Mar-2025 11:48:56 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\about.php on line 3
+[15-Mar-2025 11:48:56 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\contact.php on line 3
+[15-Mar-2025 11:49:49 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\about.php on line 3
+[15-Mar-2025 11:49:49 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\graceGVOBTS\gestion_des_ventes_des_ordinateurs\Pages\contact.php on line 3
